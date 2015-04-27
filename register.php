@@ -4,6 +4,7 @@
 require_once("db_const.php");
 // checking IF form-array exists
 if(isset($_POST['submit'])){
+	
     #############################
     # connect to mysql database #
     #############################
@@ -43,6 +44,7 @@ $email = $_POST['email'];
         ###################################
         # insert data into mysql database #
         ################################### 
+		
 		$sql = "INSERT INTO users (id, username, password, first_name, last_name, email) VALUES (NULL, '$username', '$password', '$first_name', '$last_name', '$email')";        // -> operator is used to call class methods (object oriented programming)
 		// executing the query containing the SQL string above and providing user feedback
        if($connection->query($sql)){
