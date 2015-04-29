@@ -19,7 +19,8 @@ if($connection->connect_error){
 // prepare data for insertion into database
 // collect form values
 $username = $_POST['username'];
-$password = $_POST['password'];
+// adding password encryption
+$password = hash("sha256", $_POST['password']);
 $first_name = $_POST['first_name'];
 $last_name = $_POST['last_name'];
 $email = $_POST['email'];
