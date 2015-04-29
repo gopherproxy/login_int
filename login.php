@@ -7,9 +7,9 @@ if (isset($_POST['login'])) {
         // exit the current script
         die($mysqli->connect_error);
     }
- 
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+ 	// avoiding sql injection (' or 0=0 #) by escaping special characters in sql queries
+    $username = mysqli_real_escape_string($mysqli, $_POST['username']);
+    $password = hash("sha256", $_POST['password']);
     // formulating the sql queri as PHP string
     $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password' LIMIT 1";
     // passing the string on to the query method, executing the query
@@ -17,14 +17,17 @@ if (isset($_POST['login'])) {
     // if the query is NOT returning anything, if there is no match in the database
     if (!$result->num_rows == 1) {
         echo "<p>Invalid username/password!</p>";
-    } else {
-        echo "<p>Logged in successfully</p>";
-        
+    }      
         ######################
         # do more stuff here #
         ######################
                 
-    }
+        // open a PHP session
+		session_start();
+		// session name, activating the specific session
+		$_SESSION['logged_in'] = true;
+		// redirecting to a specific URL
+		header("Location: restricted.php");
 }
 ?>
 <!doctype html>
