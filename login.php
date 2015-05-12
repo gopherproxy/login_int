@@ -26,6 +26,8 @@ if (isset($_POST['login'])) {
 		session_start();
 		// session name, activating the specific session
 		$_SESSION['logged_in'] = true;
+		// submitting the specific username together with the session
+		$_SESSION['name'] = $username;
 		// redirecting to a specific URL
 		header("Location: restricted.php");
 }
