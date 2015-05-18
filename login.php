@@ -1,4 +1,4 @@
- <?php
+<?php
 if (isset($_POST['login'])) {
     require_once("db_const.php");
     $mysqli = new mysqli(HOSTNAME, MYSQLUSER, MYSQLPASS, MYSQLDB);
@@ -14,10 +14,9 @@ if (isset($_POST['login'])) {
     $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password' LIMIT 1";
     // passing the string on to the query method, executing the query
     $result = $mysqli->query($sql);
-    // if the query is NOT returning anything, if there is no match in the database
-    if (!$result->num_rows == 1) {
-        echo "<p>Invalid username/password!</p>";
-    }      
+    // if the query finds a match in the database
+    if ($result->num_rows == 1) {  
+	
         ######################
         # do more stuff here #
         ######################
@@ -30,6 +29,7 @@ if (isset($_POST['login'])) {
 		$_SESSION['name'] = $username;
 		// redirecting to a specific URL
 		header("Location: restricted.php");
+	  }
 }
 ?>
 <!doctype html>
@@ -37,6 +37,12 @@ if (isset($_POST['login'])) {
 <head>
 <meta charset="utf-8">
 <title>User Login</title>
+<style type="text/css">
+.alert {
+	color: red;
+	font-weight: bold;
+}
+</style>
 </head>
 
 <body>
@@ -50,5 +56,11 @@ if (isset($_POST['login'])) {
   <br>
   <input type="submit" name="login" value="Login">
 </form>
+<?php
+// if there was submitted something, BUT there is NO match in the database 
+if (isset($_POST['login']) && !$result->num_rows == 1) {
+        echo "<p class=\"alert\">Invalid username/password!</p>";
+    }  
+?>
 </body>
 </html>
